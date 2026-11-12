@@ -154,7 +154,7 @@ document.getElementById("bConfirma").onclick=function(){
 };
 
 /* ---------- gravação (ntfy.sh, sem login) ---------- */
-var TOPIC="urna-ficticia-a585942e4a2d",BASE="https://ntfy.sh/"+TOPIC,seen={},conectado=false;
+var TOPIC="urna-ficticia-a585942e4a3D",BASE="https://ntfy.sh/"+TOPIC,seen={},conectado=false;
 function registrar(tipo){
   var v={tipo:tipo,t:Date.now()};
   fetch(BASE,{method:"POST",body:JSON.stringify(v)}).catch(function(){votos.push(v);draw()});
