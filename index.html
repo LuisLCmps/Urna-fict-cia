@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Urna Eletrônica Fictícia</title>
+<style>
+:root{--bg:#eef1f4;--card:#fff;--ink:#1b2430;--mut:#5b6775;--line:#cfd6de;--body:#d9d6cf;--key:#2a2f36;--keyt:#fff;--scr:#e9efe3;--ok:#1a9a3a;--warn:#e8a200;--bad:#d9432f;--bar:#2f6fed;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161b;--card:#1c232b;--ink:#e8edf2;--mut:#98a4b1;--line:#2f3945;--body:#3a3d42;--scr:#d5dccb;--bar:#6b9bff}}
+:root[data-theme="dark"]{--bg:#12161b;--card:#1c232b;--ink:#e8edf2;--mut:#98a4b1;--line:#2f3945;--body:#3a3d42;--scr:#d5dccb;--bar:#6b9bff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+nav{display:flex;gap:8px;justify-content:center;padding:12px}
+nav a{padding:8px 16px;border-radius:99px;border:1px solid var(--line);color:var(--ink);text-decoration:none;background:var(--card);font-weight:600}
+nav a.on{background:var(--bar);color:#fff;border-color:var(--bar)}
+main{max-width:760px;margin:0 auto;padding:0 12px 24px}
+.hide{display:none!important}
+.urna{display:flex;flex-wrap:wrap;gap:12px;background:var(--body);padding:14px;border-radius:14px;border:2px solid var(--line)}
+.scr{flex:1 1 320px;min-height:340px;background:var(--scr);color:#111;border:3px solid #6b7280;border-radius:6px;padding:12px;display:flex;flex-direction:column}
+.scr h2{font-size:15px;margin:0 0 6px;letter-spacing:.04em}
+.digs{display:flex;gap:6px;margin:8px 0}
+.dg{width:38px;height:46px;border:2px solid #111;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;background:#fff}
+.info{font-size:14px;line-height:1.5;flex:1}
+.info b{font-size:18px}
+.foot{font-size:12px;border-top:1px solid #444;padding-top:6px;margin-top:8px}
+.avatar{width:64px;height:78px;border:2px solid #111;background:#fff;display:flex;align-items:center;justify-content:center;font-size:34px;float:right}
+.fim{margin:auto;text-align:center}
+.fim div{font-size:64px;font-weight:800;letter-spacing:.1em}
+.pad{flex:0 0 210px;margin:0 auto}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.k{height:52px;border-radius:6px;border:0;background:var(--key);color:var(--keyt);font-size:22px;font-weight:700;cursor:pointer}
+.k:active{transform:scale(.96)}
+.k.z{grid-column:2}
+.act{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.act .k{font-size:13px;height:56px}
+.b{background:#f4f4f4;color:#111}.c{background:var(--warn);color:#111}
+.ok{background:var(--ok);grid-column:1/3;font-size:16px!important;height:64px!important}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:12px}
+.card h1{font-size:20px;margin:0 0 4px}.card p{color:var(--mut);margin:0 0 10px;font-size:14px}
+.row{margin:12px 0}.row .t{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.trk{height:16px;background:var(--line);border-radius:8px;overflow:hidden;margin-top:4px}
+.bar{height:100%;background:var(--bar);width:0;transition:width .4s}
+.sum{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}
+.sum div{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px}
+.sum b{display:block;font-size:20px}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--line);color:var(--mut)}
+.tag.live{background:var(--ok);color:#fff}
+small{color:var(--mut)}
+button.t2{margin-top:10px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#urna" id="n-urna">🗳️ Urna</a>
+  <a href="#boletim" id="n-boletim">📄 Boletim</a>
+</nav>
+<main>
+
+<section id="v-urna">
+  <div class="urna">
+    <div class="scr" id="scr"></div>
+    <div class="pad">
+      <div class="keys" id="keys"></div>
+      <div class="act">
+        <button class="k b" id="bBranco">BRANCO</button>
+        <button class="k c" id="bCorrige">CORRIGE</button>
+        <button class="k ok" id="bConfirma">CONFIRMA</button>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center"><small>Simulação com candidatos fictícios. Votos ficam guardados por cerca de 12 h. Nada aqui tem valor eleitoral.</small></p>
+</section>
+
+<section id="v-boletim" class="hide">
+  <div class="card">
+    <h1>Boletim de Urna <span class="tag" id="live">conectando…</span></h1>
+    <p>Eleição simulada para Prefeito de Vila Imaginária · Zona 001 · Seção 0001</p>
+    <div id="rows"></div>
+    <div class="sum">
+      <div>Total de votos<b id="s-tot">0</b></div>
+      <div>Votos nominais<b id="s-nom">0</b></div>
+      <div>Brancos<b id="s-br">0</b></div>
+      <div>Nulos<b id="s-nu">0</b></div>
+    </div>
+    <p style="margin-top:12px" id="upd">Aguardando votos…</p>
+    <button class="t2" onclick="window.print()">Imprimir boletim</button>
+  </div>
+</section>
+
+</main>
+<script>
+(function(){
+var CANDS=[
+ {n:"12",nome:"Maria Alvorada",part:"PSC – Partido do Sol e da Cidade",e:"🌻"},
+ {n:"34",nome:"João Pedreira",part:"UBR – União Brasa e Raiz",e:"🧱"},
+ {n:"56",nome:"Dona Clarice Luz",part:"PVC – Partido Vida e Cultura",e:"💡"},
+ {n:"78",nome:"Capitão Zé Trovão",part:"MTP – Movimento Trabalho e Paz",e:"⛈️"}
+];
+var votos=[],db=null,digits="",stage="vote",lastType=null;
+
+/* ---------- navegação por hash ---------- */
+function route(){
+  var h=location.hash==="#boletim"?"boletim":"urna";
+  document.getElementById("v-urna").classList.toggle("hide",h!=="urna");
+  document.getElementById("v-boletim").classList.toggle("hide",h!=="boletim");
+  document.getElementById("n-urna").classList.toggle("on",h==="urna");
+  document.getElementById("n-boletim").classList.toggle("on",h==="boletim");
+}
+window.addEventListener("hashchange",route);route();
+
+/* ---------- som ---------- */
+var ac=null;
+function beep(f,d){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+ var o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.type="square";g.gain.value=.05;
+ o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d);}catch(e){}}
+
+/* ---------- tela da urna ---------- */
+function find(n){for(var i=0;i<CANDS.length;i++)if(CANDS[i].n===n)return CANDS[i];return null}
+function render(){
+  var s=document.getElementById("scr");
+  if(stage==="fim"){
+    s.innerHTML='<div class="fim"><div>FIM</div><p>VOTOU</p></div>';return}
+  var c=digits.length===2?find(digits):null,h='<h2>SEU VOTO PARA</h2><b>PREFEITO</b>';
+  if(stage==="branco"){
+    h+='<div class="info" style="margin-top:20px"><b>VOTO EM BRANCO</b></div>';
+  }else{
+    h+='<div class="digs"><div class="dg">'+(digits[0]||"")+'</div><div class="dg">'+(digits[1]||"")+'</div></div>';
+    if(digits.length===2){
+      if(c) h+='<div class="info"><div class="avatar">'+c.e+'</div>Nome: <b>'+c.nome+'</b><br>Partido: '+c.part+'</div>';
+      else h+='<div class="info"><b>NÚMERO ERRADO</b><br><b>VOTO NULO</b></div>';
+    }else h+='<div class="info"></div>';
+  }
+  h+='<div class="foot">Aperte a tecla:<br>VERDE para CONFIRMAR este voto<br>LARANJA para REINICIAR este voto</div>';
+  s.innerHTML=h;
+}
+var keys=document.getElementById("keys");
+["1","2","3","4","5","6","7","8","9","0"].forEach(function(d){
+  var b=document.createElement("button");b.className="k"+(d==="0"?" z":"");b.textContent=d;
+  b.onclick=function(){if(stage!=="vote"||digits.length>=2)return;digits+=d;beep(900,.08);render()};
+  keys.appendChild(b)});
+document.getElementById("bBranco").onclick=function(){if(stage==="fim")return;digits="";stage="branco";beep(900,.08);render()};
+document.getElementById("bCorrige").onclick=function(){if(stage==="fim")return;digits="";stage="vote";beep(600,.1);render()};
+document.getElementById("bConfirma").onclick=function(){
+  if(stage==="fim")return;
+  var tipo;
+  if(stage==="branco")tipo="branco";
+  else if(digits.length<2)return;
+  else tipo=find(digits)?digits:"nulo";
+  registrar(tipo);
+  stage="fim";render();beep(1000,.9);
+  setTimeout(function(){digits="";stage="vote";render()},2500);
+};
+
+/* ---------- gravação (ntfy.sh, sem login) ---------- */
+var TOPIC="urna-ficticia-a585942e4a2d",BASE="https://ntfy.sh/"+TOPIC,seen={},conectado=false;
+function registrar(tipo){
+  var v={tipo:tipo,t:Date.now()};
+  fetch(BASE,{method:"POST",body:JSON.stringify(v)}).catch(function(){votos.push(v);draw()});
+}
+
+/* ---------- boletim ---------- */
+function draw(){
+  var cont={branco:0,nulo:0},tot=votos.length,nom=0,last=0;
+  CANDS.forEach(function(c){cont[c.n]=0});
+  votos.forEach(function(v){cont[v.tipo]=(cont[v.tipo]||0)+1;if(v.t>last)last=v.t});
+  CANDS.forEach(function(c){nom+=cont[c.n]});
+  var max=Math.max.apply(null,CANDS.map(function(c){return cont[c.n]}).concat([1]));
+  var html="";
+  CANDS.slice().sort(function(a,b){return cont[b.n]-cont[a.n]}).forEach(function(c){
+    var p=tot?(cont[c.n]*100/tot).toFixed(1):"0.0";
+    html+='<div class="row"><div class="t"><span>'+c.e+' '+c.n+' · '+c.nome+'</span><span>'+cont[c.n]+' ('+p+'%)</span></div><div class="trk"><div class="bar" style="width:'+(cont[c.n]*100/max)+'%"></div></div></div>';
+  });
+  document.getElementById("rows").innerHTML=html;
+  document.getElementById("s-tot").textContent=tot;
+  document.getElementById("s-nom").textContent=nom;
+  document.getElementById("s-br").textContent=cont.branco;
+  document.getElementById("s-nu").textContent=cont.nulo;
+  document.getElementById("upd").textContent=last?"Último voto: "+new Date(last).toLocaleString("pt-BR"):"Aguardando votos…";
+}
+function setLive(t,on){var e=document.getElementById("live");e.textContent=t;e.className="tag"+(on?" live":"")}
+
+draw();render();
+
+/* ---------- ao vivo ---------- */
+function conectar(){
+  try{
+    var es=new EventSource(BASE+"/sse?since=all");
+    es.onopen=function(){conectado=true;setLive("● ao vivo",true)};
+    es.onmessage=function(e){
+      try{var m=JSON.parse(e.data);
+        if(m.event!=="message"||seen[m.id])return;
+        seen[m.id]=1;votos.push(JSON.parse(m.message));draw();
+      }catch(x){}
+    };
+    es.onerror=function(){setLive("reconectando…",false)};
+  }catch(e){setLive("modo local",false)}
+}
+conectar();
+})();
+</script>
+</body>
+</html>
